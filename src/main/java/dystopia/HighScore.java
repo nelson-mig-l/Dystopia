@@ -15,7 +15,7 @@ public class HighScore implements Comparable<HighScore> {
     public static HighScore[] scores;
 
     static {
-        String[] in = HighscoreFile.getWordsFromFile("highscore.txt");
+        String[] in = HighScoreFile.getWordsFromFile("highscore.txt");
         scores = new HighScore[10];
         for (int i = 0; i < scores.length; i++) {
             scores[i] = new HighScore(in[i]);
@@ -46,7 +46,7 @@ public class HighScore implements Comparable<HighScore> {
                     + "You got a High Score:" + score) + "," + score);
             Arrays.sort(temp);
             System.arraycopy(temp, 0, scores, 0, 10);
-            HighscoreFile.writeHighScoresToFile("highscore.txt", scores);
+            HighScoreFile.writeHighScoresToFile("highscore.txt", scores);
         }
     }
 }

@@ -1,10 +1,16 @@
 package dystopia;
 
+import dystopia.map.Map;
+import dystopia.map.Player;
+import dystopia.map.Tiles;
+
 /**
  * @author Rohans
  */
 public class Car {
-    public int x, y;
+
+    private int x;
+    private int y;
     /**
      * Represents the direction this car is traveling
      *   3
@@ -17,24 +23,15 @@ public class Car {
 
     /**
      * Creates a car at a given location
-     *
-     * @param inX
-     * @param inY
      */
-    private Car(int inX, int inY) {
-        if (!Map.inMapBounds(inX, inY)) {
-            //something bad happenned....
-            //um... just write to stderr and pretend this never happened
-            System.err.println("Something bad happened while creating car");
-            //just spawn this car somewhere inconspicuous
-            x = Map.mult;
-            y = Map.map.length - Map.mult;
-            //bottom left corner
+    private Car(int x, int y) {
+        if (!Map.inMapBounds(x, y)) {
+            throw new RuntimeException("Something bad happened while creating car");
         } else {
-            x = inX;
-            y = inY;
+            this.x = x;
+            this.y = y;
         }
-        Map.map[x][y] = Map.car;
+        Map.map[x][y] = Tiles.CAR;
         dir = 0;
     }
 
@@ -42,38 +39,38 @@ public class Car {
 
         int xAttempt = (int) (Math.random() * Map.map.length);
         int yAttempt = (int) (Math.random() * Map.map[0].length);
-        while (Map.map[xAttempt][yAttempt] != Map.space) {
+        while (Map.map[xAttempt][yAttempt] != Tiles.SPACE) {
             xAttempt = (int) (Math.random() * Map.map.length);
             yAttempt = (int) (Math.random() * Map.map[0].length);
         }
         x = xAttempt;
         y = yAttempt;
-        Map.map[x][y] = Map.car;
-        if (Map.maze[(x / Map.mult) + 1][(y / Map.mult)]) {
+        Map.map[x][y] = Tiles.CAR;
+        if (Map.maze[(x / Map.MULTIPLIER) + 1][(y / Map.MULTIPLIER)]) {
             dir = 0;
-        } else if (Map.maze[(x / Map.mult)][(y / Map.mult) + 1]) {
+        } else if (Map.maze[(x / Map.MULTIPLIER)][(y / Map.MULTIPLIER) + 1]) {
             dir = 1;
-        } else if (Map.maze[(x / Map.mult) - 1][(y / Map.mult)]) {
+        } else if (Map.maze[(x / Map.MULTIPLIER) - 1][(y / Map.MULTIPLIER)]) {
             dir = 2;
-        } else if (Map.maze[(x / Map.mult)][(y / Map.mult) + 1]) {
+        } else if (Map.maze[(x / Map.MULTIPLIER)][(y / Map.MULTIPLIER) + 1]) {
             dir = 1;
         }
     }
 
     public void move() {
-        Map.map[x][y] = Map.space;
+        Map.map[x][y] = Tiles.SPACE;
         double angle = Math.PI / 2 * dir;
         int dX = (int) Math.cos(angle);
         int dY = (int) Math.sin(angle);
-        if (Map.map[x + dX][y + dY] != Map.space) {
+        if (Map.map[x + dX][y + dY] != Tiles.SPACE) {
             dX *= -1;
             dY *= -1;
             dir += 2;
         }
-        if (x + dX != Map.Player.x || y + dY != Map.Player.y) {
+        if (x + dX != Player.x || y + dY != Player.y) {
             x += dX;
             y += dY;
         }
-        Map.map[x][y] = Map.car;
+        Map.map[x][y] = Tiles.CAR;
     }
 }

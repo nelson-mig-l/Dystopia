@@ -10,52 +10,51 @@ import java.awt.event.KeyListener;
  */
 public class TitleController implements KeyListener {
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-	}
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-	}
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
 
-	/**
-	 * Navigation through menus r-Return to menu i-how to play p-play one game
-	 *
-	 * @param e
-	 */
-	@Override
-	public void keyReleased(KeyEvent e) {
-		if (!TitleFrame.playing.get()) {
-			switch (e.getKeyChar()) {
-				case 'R':
-				case 'r':
-					if (TitleFrame.TitlePanel.screen.get() == Screens.highscore) {
-						TitleFrame.TitlePanel.screen.set(Screens.title);
-					}
-					break;
-				case 'i':
-				case 'I':
-					if (TitleFrame.TitlePanel.screen.get() == Screens.title) {
-						TitleFrame.TitlePanel.screen.set(Screens.help);
-					}
-					break;
+    /**
+     * Navigation through menus r-Return to menu i-how to play p-play one game
+     *
+     * @param e
+     */
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (!TitleFrame.playing.get()) {
+            switch (e.getKeyChar()) {
+                case 'R':
+                case 'r':
+                    if (TitlePanel.screen.get() == Screens.HIGH_SCORE) {
+                        TitlePanel.screen.set(Screens.TITLE);
+                    }
+                    break;
+                case 'i':
+                case 'I':
+                    if (TitlePanel.screen.get() == Screens.TITLE) {
+                        TitlePanel.screen.set(Screens.HELP);
+                    }
+                    break;
 
-				case 'p':
-				case 'P':
-					if (TitleFrame.TitlePanel.screen.get() == Screens.title || TitleFrame.TitlePanel.screen.get() == Screens.help) {
-					TitleFrame.TitlePanel.screen.set(Screens.title);
-						TitleFrame.playing.set(true);
-					}
-					break;
-				case 'h':
-				case 'H':
-					if (TitleFrame.TitlePanel.screen.get() == Screens.title||TitleFrame.TitlePanel.screen.get() == Screens.help) {
-						TitleFrame.TitlePanel.screen.set(Screens.highscore);
-					}
-
-					break;
-			}
-		}
-	}
+                case 'p':
+                case 'P':
+                    if (TitlePanel.screen.get() == Screens.TITLE || TitlePanel.screen.get() == Screens.HELP) {
+                        TitlePanel.screen.set(Screens.TITLE);
+                        TitleFrame.playing.set(true);
+                    }
+                    break;
+                case 'h':
+                case 'H':
+                    if (TitlePanel.screen.get() == Screens.TITLE || TitlePanel.screen.get() == Screens.HELP) {
+                        TitlePanel.screen.set(Screens.HIGH_SCORE);
+                    }
+                    break;
+            }
+        }
+    }
 
 }

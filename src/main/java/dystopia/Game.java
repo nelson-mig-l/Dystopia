@@ -1,5 +1,7 @@
 package dystopia;
 
+import dystopia.map.Map;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,7 +10,7 @@ import java.util.logging.Logger;
  */
 public class Game implements Runnable {
 
-    public static Car[] cars = new Car[Map.citySize * Map.citySize / 10];
+    public static Car[] cars = new Car[Map.CITY_SIZE * Map.CITY_SIZE / 10];
 
     public static void makeCars() {
         for (int i = 0; i < cars.length; i++) {
@@ -19,16 +21,16 @@ public class Game implements Runnable {
     @Override
     public void run() {
         makeCars();
-        Cop.bounty = 0;
-        Cop.numCops = 10;
+        Cops.bounty = 0;
+        Cops.numCops = 10;
         int i = 0;
-        Cop.createCops();
+        Cops.createCops();
         while (TitleFrame.playing.get()) {
             if (i % 50 == 0) {
                 for (int j = 0; j < 10; j++)
-                    Cop.addCop();
+                    Cops.addCop();
             }
-            Cop.bounty += 100;
+            Cops.bounty += 100;
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
@@ -37,7 +39,7 @@ public class Game implements Runnable {
             for (Car c : cars) {
                 c.move();
             }
-            Cop.moveAllCops();
+            Cops.moveAllCops();
             i++;
         }
     }

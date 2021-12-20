@@ -8,7 +8,7 @@ import java.util.Scanner;
 /**
  * @author rohan
  */
-public class HighscoreFile {
+public class HighScoreFile {
 
     /**
      * @param fileName is the path to the file or just the name if it is local

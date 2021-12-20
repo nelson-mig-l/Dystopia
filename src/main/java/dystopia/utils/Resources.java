@@ -1,4 +1,4 @@
-package dystopia;
+package dystopia.utils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -7,10 +7,10 @@ import java.net.URL;
 
 public class Resources {
 
-    public BufferedImage loadImage(final String name) {
-        final URL url = getClass().getClassLoader().getResource(name);
+    public static BufferedImage loadImage(final String name) {
+        final URL resource = Resources.class.getClassLoader().getResource(name);
         try {
-            return ImageIO.read(url);
+            return ImageIO.read(resource);
         } catch (final IOException e) {
             throw new RuntimeException(name, e);
         }
