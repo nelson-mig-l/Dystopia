@@ -1,5 +1,7 @@
 package dystopia;
 
+import dystopia.highscore.HighScore;
+import dystopia.highscore.HighScores;
 import dystopia.utils.Resources;
 
 import javax.swing.*;
@@ -63,11 +65,11 @@ public class TitlePanel extends JPanel {
                 g.setColor(c);
                 g.setFont(highScoreFont);
                 g.drawString("Most Wanted", 250, 50);
-                int i = 0;
-                for (HighScore s : HighScore.scores) {
-                    g.drawString(s.name + DOTS.substring(s.name.length()), 0, 100 + i);
-                    g.drawString(s.score + "", 550, 100 + i);
-                    i += 50;
+                int pixelsFromTop = 100;
+                for (HighScore s : HighScores.scores) {
+                    g.drawString(s.getName() + DOTS.substring(s.getName().length()), 0, pixelsFromTop);
+                    g.drawString(s.getScore() + "", 550, pixelsFromTop);
+                    pixelsFromTop += 50;
 
                 }
                 g.drawString("Press \"R\" to return to the home screen", 0, 640 - 12);

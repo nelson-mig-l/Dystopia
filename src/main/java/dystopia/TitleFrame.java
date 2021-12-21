@@ -16,7 +16,6 @@ public class TitleFrame extends JFrame {
     public static TitleFrame t;
 
     public static void initialize() throws Exception {
-
         t = new TitleFrame();
         while (true) {
             while (!playing.get()) {

@@ -22,7 +22,7 @@ public class GamePanel extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        g.setColor(Color.green);
+        g.setColor(Color.GRAY);
         g.fillRect(0, 0, 650, 650);
         g.setColor(Color.red);
         g.drawString("Bounty: " + Cops.bounty + "$", 500, 30);
@@ -30,7 +30,7 @@ public class GamePanel extends JPanel {
             for (int x = Player.x + 10; x >= Player.x - 10; x--) {
                 BufferedImage b = Tiles.GRASS.getImage();
                 if (Map.inMapBounds(x, y)) {
-                    b = Map.map[x][y].getImage();
+                    b = Map.tiles[x][y].getImage();
                 }
 
                 int i = x - Player.x + 10;

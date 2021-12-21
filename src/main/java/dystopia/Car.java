@@ -31,38 +31,38 @@ public class Car {
             this.x = x;
             this.y = y;
         }
-        Map.map[x][y] = Tiles.CAR;
+        Map.tiles[x][y] = Tiles.CAR;
         dir = 0;
     }
 
     public Car() {
 
-        int xAttempt = (int) (Math.random() * Map.map.length);
-        int yAttempt = (int) (Math.random() * Map.map[0].length);
-        while (Map.map[xAttempt][yAttempt] != Tiles.SPACE) {
-            xAttempt = (int) (Math.random() * Map.map.length);
-            yAttempt = (int) (Math.random() * Map.map[0].length);
+        int xAttempt = (int) (Math.random() * Map.tiles.length);
+        int yAttempt = (int) (Math.random() * Map.tiles[0].length);
+        while (Map.tiles[xAttempt][yAttempt] != Tiles.SPACE) {
+            xAttempt = (int) (Math.random() * Map.tiles.length);
+            yAttempt = (int) (Math.random() * Map.tiles[0].length);
         }
         x = xAttempt;
         y = yAttempt;
-        Map.map[x][y] = Tiles.CAR;
-        if (Map.maze[(x / Map.MULTIPLIER) + 1][(y / Map.MULTIPLIER)]) {
+        Map.tiles[x][y] = Tiles.CAR;
+        if (Map.navigable[(x / Map.MULTIPLIER) + 1][(y / Map.MULTIPLIER)]) {
             dir = 0;
-        } else if (Map.maze[(x / Map.MULTIPLIER)][(y / Map.MULTIPLIER) + 1]) {
+        } else if (Map.navigable[(x / Map.MULTIPLIER)][(y / Map.MULTIPLIER) + 1]) {
             dir = 1;
-        } else if (Map.maze[(x / Map.MULTIPLIER) - 1][(y / Map.MULTIPLIER)]) {
+        } else if (Map.navigable[(x / Map.MULTIPLIER) - 1][(y / Map.MULTIPLIER)]) {
             dir = 2;
-        } else if (Map.maze[(x / Map.MULTIPLIER)][(y / Map.MULTIPLIER) + 1]) {
+        } else if (Map.navigable[(x / Map.MULTIPLIER)][(y / Map.MULTIPLIER) + 1]) {
             dir = 1;
         }
     }
 
     public void move() {
-        Map.map[x][y] = Tiles.SPACE;
+        Map.tiles[x][y] = Tiles.SPACE;
         double angle = Math.PI / 2 * dir;
         int dX = (int) Math.cos(angle);
         int dY = (int) Math.sin(angle);
-        if (Map.map[x + dX][y + dY] != Tiles.SPACE) {
+        if (Map.tiles[x + dX][y + dY] != Tiles.SPACE) {
             dX *= -1;
             dY *= -1;
             dir += 2;
@@ -71,6 +71,6 @@ public class Car {
             x += dX;
             y += dY;
         }
-        Map.map[x][y] = Tiles.CAR;
+        Map.tiles[x][y] = Tiles.CAR;
     }
 }

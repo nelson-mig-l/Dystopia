@@ -23,5 +23,4 @@ public enum Tiles {
         return image;
     }
 
-
 }

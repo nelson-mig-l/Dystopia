@@ -15,70 +15,73 @@ public class Cops {
         cops = new ArrayList<>();
         numCops += bounty / 1000;
         for (int i = 0; i < numCops; i++) {
-            int aX = (int) (Math.random() * Map.map.length);
-            int aY = (int) (Math.random() * Map.map[0].length);
-            while (Map.map[aX][aY] != Tiles.SPACE) {
-                aX = (int) (Math.random() * Map.map.length);
-                aY = (int) (Math.random() * Map.map[0].length);
+            int aX = (int) (Math.random() * Map.tiles.length);
+            int aY = (int) (Math.random() * Map.tiles[0].length);
+            while (Map.tiles[aX][aY] != Tiles.SPACE) {
+                aX = (int) (Math.random() * Map.tiles.length);
+                aY = (int) (Math.random() * Map.tiles[0].length);
             }
             cops.add(new Cop());
             cops.get(i).x = aX;
             cops.get(i).y = aY;
-            cops.get(i).standingOn = Map.map[aX][aY];
-            Map.map[aX][aY] = Tiles.COP;
+            cops.get(i).standingOn = Map.tiles[aX][aY];
+            Map.tiles[aX][aY] = Tiles.COP;
         }
     }
 
     public static void addCop() {
         numCops++;
-        int aX = (int) (Math.random() * Map.map.length);
-        int aY = (int) (Math.random() * Map.map[0].length);
-        while (Map.map[aX][aY] != Tiles.SPACE) {
-            aX = (int) (Math.random() * Map.map.length);
-            aY = (int) (Math.random() * Map.map[0].length);
+        int aX = (int) (Math.random() * Map.tiles.length);
+        int aY = (int) (Math.random() * Map.tiles[0].length);
+        while (Map.tiles[aX][aY] != Tiles.SPACE) {
+            aX = (int) (Math.random() * Map.tiles.length);
+            aY = (int) (Math.random() * Map.tiles[0].length);
         }
         cops.add(new Cop());
         cops.get(cops.size() - 1).x = aX;
         cops.get(cops.size() - 1).y = aY;
-        cops.get(cops.size() - 1).standingOn = Map.map[aX][aY];
-        Map.map[aX][aY] = Tiles.COP;
+        cops.get(cops.size() - 1).standingOn = Map.tiles[aX][aY];
+        Map.tiles[aX][aY] = Tiles.COP;
     }
 
     public static void moveAllCops() {
         floodFillMap(Player.x, Player.y);
         for (Cop c : cops) {
-            int tX = c.x, tY = c.y;
-            Map.map[c.x][c.y] = c.standingOn;
-            int shortestPath = Integer.MAX_VALUE;
-            if (navigationMap[c.x + 1][c.y] < shortestPath) {
-                tX = c.x + 1;
-                tY = c.y;
-                shortestPath = navigationMap[tX][tY];
-            }
-            if (navigationMap[c.x][c.y + 1] < shortestPath) {
-                tX = c.x;
-                tY = c.y + 1;
-                shortestPath = navigationMap[tX][tY];
-            }
-            if (navigationMap[c.x][c.y - 1] < shortestPath) {
-                tX = c.x;
-                tY = c.y - 1;
-                shortestPath = navigationMap[tX][tY];
-            }
-            if (navigationMap[c.x - 1][c.y] < shortestPath) {
-                tX = c.x - 1;
-                tY = c.y;
-                shortestPath = navigationMap[tX][tY];
-            }
-            c.x = tX;
-            c.y = tY;
-            c.standingOn = Map.map[c.x][c.y] == Tiles.COP ? (Map.maze[c.x / Map.MULTIPLIER][c.y / Map.MULTIPLIER] ? Tiles.SPACE : Tiles.GRASS) : Map.map[c.x][c.y];
-            Map.map[tX][tY] = Tiles.COP;
-            if (c.x == Player.x && c.y == Player.y) {
-                //todo calc score and display message
-                TitleFrame.playing.set(false);
-            }
+            moveSingleCop(c);
+        }
+    }
 
+    private static void moveSingleCop(final Cop c) {
+        int tX = c.x, tY = c.y;
+        Map.tiles[c.x][c.y] = c.standingOn;
+        int shortestPath = Integer.MAX_VALUE;
+        if (navigationMap[c.x + 1][c.y] < shortestPath) {
+            tX = c.x + 1;
+            tY = c.y;
+            shortestPath = navigationMap[tX][tY];
+        }
+        if (navigationMap[c.x][c.y + 1] < shortestPath) {
+            tX = c.x;
+            tY = c.y + 1;
+            shortestPath = navigationMap[tX][tY];
+        }
+        if (navigationMap[c.x][c.y - 1] < shortestPath) {
+            tX = c.x;
+            tY = c.y - 1;
+            shortestPath = navigationMap[tX][tY];
+        }
+        if (navigationMap[c.x - 1][c.y] < shortestPath) {
+            tX = c.x - 1;
+            tY = c.y;
+            shortestPath = navigationMap[tX][tY];
+        }
+        c.x = tX;
+        c.y = tY;
+        c.standingOn = Map.tiles[c.x][c.y] == Tiles.COP ? (Map.navigable[c.x / Map.MULTIPLIER][c.y / Map.MULTIPLIER] ? Tiles.SPACE : Tiles.GRASS) : Map.tiles[c.x][c.y];
+        Map.tiles[tX][tY] = Tiles.COP;
+        if (c.x == Player.x && c.y == Player.y) {
+            //todo calc score and display message
+            TitleFrame.playing.set(false);
         }
     }
 
@@ -98,7 +101,7 @@ public class Cops {
     public static void floodFillMap(int inX, int inY) {
         //System.out.println(inX+"|"+inY);
 
-        navigationMap = new int[Map.map.length][Map.map[0].length];
+        navigationMap = new int[Map.tiles.length][Map.tiles[0].length];
         //System.out.println(navigationMap.length+"|"+navigationMap[0].length);
         markOpen(inX, inY, 1);
         for (int i = 0; i < navigationMap.length; i++) {
@@ -108,32 +111,31 @@ public class Cops {
                 }
             }
         }
-
     }
 
-    public static void markOpen(int x, int y, int n) {
+    public static void markOpen(int x, int y, int depth) {
         if (Map.inMapBounds(x, y)) {
-            navigationMap[x][y] = n;
+            navigationMap[x][y] = depth;
         } else {
             return;
         }
-        if (n > 100) {
+        if (depth > 100) {
             return;
         }
-        if (Map.inMapBounds(x + 1, y) && (navigationMap[x + 1][y] == 0 || n + 1 < navigationMap[x + 1][y]) && (Map.map[x + 1][y] == Tiles.SPACE || Map.map[x + 1][y] == Tiles.GRASS)) {
-            markOpen(x + 1, y, n + 1);
+        if (Map.inMapBounds(x + 1, y) && (navigationMap[x + 1][y] == 0 || depth + 1 < navigationMap[x + 1][y]) && (Map.tiles[x + 1][y] == Tiles.SPACE || Map.tiles[x + 1][y] == Tiles.GRASS)) {
+            markOpen(x + 1, y, depth + 1);
         }
 
-        if (Map.inMapBounds(x - 1, y) && (navigationMap[x - 1][y] == 0 || n + 1 < navigationMap[x - 1][y]) && (Map.map[x - 1][y] == Tiles.SPACE || Map.map[x - 1][y] == Tiles.GRASS)) {
-            markOpen(x - 1, y, n + 1);
+        if (Map.inMapBounds(x - 1, y) && (navigationMap[x - 1][y] == 0 || depth + 1 < navigationMap[x - 1][y]) && (Map.tiles[x - 1][y] == Tiles.SPACE || Map.tiles[x - 1][y] == Tiles.GRASS)) {
+            markOpen(x - 1, y, depth + 1);
         }
 
-        if (Map.inMapBounds(x, y + 1) && (navigationMap[x][y + 1] == 0 || n + 1 < navigationMap[x][y + 1]) && (Map.map[x][y + 1] == Tiles.SPACE || Map.map[x][y + 1] == Tiles.GRASS)) {
-            markOpen(x, y + 1, n + 1);
+        if (Map.inMapBounds(x, y + 1) && (navigationMap[x][y + 1] == 0 || depth + 1 < navigationMap[x][y + 1]) && (Map.tiles[x][y + 1] == Tiles.SPACE || Map.tiles[x][y + 1] == Tiles.GRASS)) {
+            markOpen(x, y + 1, depth + 1);
         }
 
-        if (Map.inMapBounds(x, y - 1) && (navigationMap[x][y - 1] == 0 || n + 1 < navigationMap[x][y - 1]) && (Map.map[x][y - 1] == Tiles.SPACE || Map.map[x][y - 1] == Tiles.GRASS)) {
-            markOpen(x, y - 1, n + 1);
+        if (Map.inMapBounds(x, y - 1) && (navigationMap[x][y - 1] == 0 || depth + 1 < navigationMap[x][y - 1]) && (Map.tiles[x][y - 1] == Tiles.SPACE || Map.tiles[x][y - 1] == Tiles.GRASS)) {
+            markOpen(x, y - 1, depth + 1);
         }
     }
 
