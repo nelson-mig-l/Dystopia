@@ -23,13 +23,13 @@ public class Player {
                 tX++;
                 break;
         }
-        if (Map.tiles[tX][tY] == MapTile.GET_AWAY) {
+        if (Map.getTileAt(tX, tY) == MapTile.GET_AWAY) {
             Map.makeCity();
             Game.makeCars();
             Cops.createCops();
             Cops.bounty += 25000;
         }
-        if (Map.inMapBounds(tX, tY) && Map.tiles[tX][tY] == MapTile.SPACE || Map.tiles[tX][tY] == MapTile.GRASS) {
+        if (Map.inMapBounds(tX, tY) && Map.getTileAt(tX, tY) == MapTile.SPACE || Map.getTileAt(tX, tY) == MapTile.GRASS) {
             x = tX;
             y = tY;
         }

@@ -17,9 +17,11 @@ public class Map {
 
     public static final int MULTIPLIER = 5;
     public static final int CITY_SIZE = 39;
+    public static final int TILES_SIZE = CITY_SIZE * MULTIPLIER;
 
     private static boolean[][] navigable;
-    public static MapTile[][] tiles;
+
+    private static MapTile[][] tiles;
 
     private static final Stack<Coordinate> nodes = new Stack<>();
 
@@ -32,6 +34,14 @@ public class Map {
         }
         frame.setVisible(false);
         HighScores.manageScore(Cops.bounty);
+    }
+
+    public static MapTile getTileAt(int x, int y) {
+        return tiles[x][y];
+    }
+
+    public static void setTileAt(int x, int y, MapTile tile) {
+        tiles[x][y] = tile;
     }
 
     public static void makeCity() {

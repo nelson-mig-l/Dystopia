@@ -33,7 +33,7 @@ public class GamePanel extends JPanel {
             for (int x = Player.x + 10; x >= Player.x - 10; x--) {
                 BufferedImage b = MapTile.GRASS.getImage();
                 if (Map.inMapBounds(x, y)) {
-                    b = Map.tiles[x][y].getImage();
+                    b = Map.getTileAt(x, y).getImage();
                 }
 
                 int i = x - Player.x + 10;

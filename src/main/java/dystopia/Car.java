@@ -4,6 +4,8 @@ import dystopia.map.Map;
 import dystopia.map.Player;
 import dystopia.map.MapTile;
 
+import java.util.Random;
+
 /**
  * @author Rohans
  */
@@ -22,16 +24,16 @@ public class Car {
     private int dir;
 
     public Car() {
-
-        int xAttempt = (int) (Math.random() * Map.tiles.length);
-        int yAttempt = (int) (Math.random() * Map.tiles[0].length);
-        while (Map.tiles[xAttempt][yAttempt] != MapTile.SPACE) {
-            xAttempt = (int) (Math.random() * Map.tiles.length);
-            yAttempt = (int) (Math.random() * Map.tiles[0].length);
+        final Random random = new Random();
+        int xAttempt = random.nextInt(Map.TILES_SIZE);
+        int yAttempt = random.nextInt(Map.TILES_SIZE);
+        while (Map.getTileAt(xAttempt,yAttempt) != MapTile.SPACE) {
+            xAttempt = random.nextInt(Map.TILES_SIZE);
+            yAttempt = random.nextInt(Map.TILES_SIZE);
         }
         x = xAttempt;
         y = yAttempt;
-        Map.tiles[x][y] = MapTile.CAR;
+        Map.setTileAt(x, y, MapTile.CAR);
         if (Map.isNavigable(x / Map.MULTIPLIER + 1, y / Map.MULTIPLIER)) {
             dir = 0;
         } else if (Map.isNavigable(x / Map.MULTIPLIER, y / Map.MULTIPLIER + 1)) {
@@ -44,11 +46,12 @@ public class Car {
     }
 
     public void move() {
-        Map.tiles[x][y] = MapTile.SPACE;
+        // free current position
+        Map.setTileAt(x, y, MapTile.SPACE);
         double angle = Math.PI / 2 * dir;
         int dX = (int) Math.cos(angle);
         int dY = (int) Math.sin(angle);
-        if (Map.tiles[x + dX][y + dY] != MapTile.SPACE) {
+        if (Map.getTileAt(x + dX, y + dY) != MapTile.SPACE) {
             dX *= -1;
             dY *= -1;
             dir += 2;
@@ -57,6 +60,7 @@ public class Car {
             x += dX;
             y += dY;
         }
-        Map.tiles[x][y] = MapTile.CAR;
+        // occupy new position
+        Map.setTileAt(x, y, MapTile.CAR);
     }
 }
