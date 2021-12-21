@@ -1,17 +1,17 @@
 package dystopia;
 
-import dystopia.map.Tiles;
+import dystopia.map.MapTile;
 
 /**
  * @author Rohans
  */
 public class Cop {
 
-    public Tiles standingOn;
+    private MapTile standingOn;
     private int x;
     private int y;
 
-    public Cop(final int x, final int y, final Tiles standingOn) {
+    public Cop(final int x, final int y, final MapTile standingOn) {
         this.x = x;
         this.y = y;
         this.standingOn = standingOn;
@@ -25,9 +25,14 @@ public class Cop {
         return y;
     }
 
-    public void moveTo(final int x, final int y) {
+    public MapTile standingAt() {
+        return standingOn;
+    }
+
+    public void moveTo(final int x, final int y, final MapTile standingOn) {
         this.x = x;
         this.y = y;
+        this.standingOn = standingOn;
     }
 
 }

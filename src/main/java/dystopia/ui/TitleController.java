@@ -1,4 +1,4 @@
-package dystopia;
+package dystopia.ui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -29,28 +29,28 @@ public class TitleController implements KeyListener {
             switch (e.getKeyChar()) {
                 case 'R':
                 case 'r':
-                    if (TitlePanel.screen.get() == Screens.HIGH_SCORE) {
-                        TitlePanel.screen.set(Screens.TITLE);
+                    if (TitlePanel.screen.get() == TitleScreens.HIGH_SCORE) {
+                        TitlePanel.screen.set(TitleScreens.TITLE);
                     }
                     break;
                 case 'i':
                 case 'I':
-                    if (TitlePanel.screen.get() == Screens.TITLE) {
-                        TitlePanel.screen.set(Screens.HELP);
+                    if (TitlePanel.screen.get() == TitleScreens.TITLE) {
+                        TitlePanel.screen.set(TitleScreens.HELP);
                     }
                     break;
 
                 case 'p':
                 case 'P':
-                    if (TitlePanel.screen.get() == Screens.TITLE || TitlePanel.screen.get() == Screens.HELP) {
-                        TitlePanel.screen.set(Screens.TITLE);
+                    if (TitlePanel.screen.get() == TitleScreens.TITLE || TitlePanel.screen.get() == TitleScreens.HELP) {
+                        TitlePanel.screen.set(TitleScreens.TITLE);
                         TitleFrame.playing.set(true);
                     }
                     break;
                 case 'h':
                 case 'H':
-                    if (TitlePanel.screen.get() == Screens.TITLE || TitlePanel.screen.get() == Screens.HELP) {
-                        TitlePanel.screen.set(Screens.HIGH_SCORE);
+                    if (TitlePanel.screen.get() == TitleScreens.TITLE || TitlePanel.screen.get() == TitleScreens.HELP) {
+                        TitlePanel.screen.set(TitleScreens.HIGH_SCORE);
                     }
                     break;
             }

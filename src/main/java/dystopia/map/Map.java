@@ -2,7 +2,8 @@ package dystopia.map;
 
 import dystopia.Cops;
 import dystopia.Game;
-import dystopia.TitleFrame;
+import dystopia.ui.GameFrame;
+import dystopia.ui.TitleFrame;
 import dystopia.highscore.HighScores;
 
 import java.util.Stack;
@@ -18,7 +19,7 @@ public class Map {
     public static final int CITY_SIZE = 39;
 
     private static boolean[][] navigable;
-    public static Tiles[][] tiles;
+    public static MapTile[][] tiles;
 
     private static final Stack<Coordinate> nodes = new Stack<>();
 
@@ -41,10 +42,10 @@ public class Map {
         while (!nodes.empty()) {
             findNewNode();
         }
-        tiles = new Tiles[navigable.length * MULTIPLIER][navigable[0].length * MULTIPLIER];
+        tiles = new MapTile[navigable.length * MULTIPLIER][navigable[0].length * MULTIPLIER];
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
-                tiles[i][j] = !navigable[i / MULTIPLIER][j / MULTIPLIER] ? (!(i / MULTIPLIER == 0 || i / MULTIPLIER == CITY_SIZE - 1 || j / MULTIPLIER == 0 || j / MULTIPLIER == CITY_SIZE - 1) && Math.random() < .3 ? Tiles.GRASS : Tiles.WALL) : Tiles.SPACE;
+                tiles[i][j] = !navigable[i / MULTIPLIER][j / MULTIPLIER] ? (!(i / MULTIPLIER == 0 || i / MULTIPLIER == CITY_SIZE - 1 || j / MULTIPLIER == 0 || j / MULTIPLIER == CITY_SIZE - 1) && Math.random() < .3 ? MapTile.GRASS : MapTile.WALL) : MapTile.SPACE;
             }
         }
         for (int i = 0; i < 350; i++) {
@@ -53,14 +54,14 @@ public class Map {
             if ((x % 2 == 1 || y % 2 == 1) && !navigable[x][y]) {
                 for (int j = 0; j < MULTIPLIER; j++) {
                     for (int k = 0; k < MULTIPLIER; k++) {
-                        tiles[MULTIPLIER * x + j][MULTIPLIER * y + k] = Tiles.GRASS;
+                        tiles[MULTIPLIER * x + j][MULTIPLIER * y + k] = MapTile.GRASS;
                     }
                 }
             }
         }
         for (int j = 0; j <= MULTIPLIER / 2; j++)
             for (int i = 0; i <= MULTIPLIER; i++) {
-                tiles[tiles.length - MULTIPLIER - 1 + i][tiles[0].length - MULTIPLIER - 1 - j] = Tiles.GET_AWAY;
+                tiles[tiles.length - MULTIPLIER - 1 + i][tiles[0].length - MULTIPLIER - 1 - j] = MapTile.GET_AWAY;
             }
     }
 

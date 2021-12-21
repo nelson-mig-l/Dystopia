@@ -2,7 +2,8 @@ package dystopia;
 
 import dystopia.map.Map;
 import dystopia.map.Player;
-import dystopia.map.Tiles;
+import dystopia.map.MapTile;
+import dystopia.ui.TitleFrame;
 
 import java.util.ArrayList;
 
@@ -17,12 +18,12 @@ public class Cops {
         for (int i = 0; i < numCops; i++) {
             int aX = (int) (Math.random() * Map.tiles.length);
             int aY = (int) (Math.random() * Map.tiles[0].length);
-            while (Map.tiles[aX][aY] != Tiles.SPACE) {
+            while (Map.tiles[aX][aY] != MapTile.SPACE) {
                 aX = (int) (Math.random() * Map.tiles.length);
                 aY = (int) (Math.random() * Map.tiles[0].length);
             }
             cops.add(new Cop(aX, aY, Map.tiles[aX][aY]));
-            Map.tiles[aX][aY] = Tiles.COP;
+            Map.tiles[aX][aY] = MapTile.COP;
         }
     }
 
@@ -30,12 +31,12 @@ public class Cops {
         numCops++;
         int aX = (int) (Math.random() * Map.tiles.length);
         int aY = (int) (Math.random() * Map.tiles[0].length);
-        while (Map.tiles[aX][aY] != Tiles.SPACE) {
+        while (Map.tiles[aX][aY] != MapTile.SPACE) {
             aX = (int) (Math.random() * Map.tiles.length);
             aY = (int) (Math.random() * Map.tiles[0].length);
         }
         cops.add(new Cop(aX, aY, Map.tiles[aX][aY]));
-        Map.tiles[aX][aY] = Tiles.COP;
+        Map.tiles[aX][aY] = MapTile.COP;
     }
 
     public static void moveAllCops() {
@@ -45,38 +46,38 @@ public class Cops {
         }
     }
 
-    private static void moveSingleCop(final Cop c) {
-        int tX = c.getX(), tY = c.getY();
-        Map.tiles[c.getX()][c.getY()] = c.standingOn;
+    private static void moveSingleCop(final Cop cop) {
+        int tX = cop.getX(), tY = cop.getY();
+        Map.tiles[cop.getX()][cop.getY()] = cop.standingAt();
         int shortestPath = Integer.MAX_VALUE;
-        if (navigationMap[c.getX() + 1][c.getY()] < shortestPath) {
-            tX = c.getX() + 1;
-            tY = c.getY();
+        if (navigationMap[cop.getX() + 1][cop.getY()] < shortestPath) {
+            tX = cop.getX() + 1;
+            tY = cop.getY();
             shortestPath = navigationMap[tX][tY];
         }
-        if (navigationMap[c.getX()][c.getY() + 1] < shortestPath) {
-            tX = c.getX();
-            tY = c.getY() + 1;
+        if (navigationMap[cop.getX()][cop.getY() + 1] < shortestPath) {
+            tX = cop.getX();
+            tY = cop.getY() + 1;
             shortestPath = navigationMap[tX][tY];
         }
-        if (navigationMap[c.getX()][c.getY() - 1] < shortestPath) {
-            tX = c.getX();
-            tY = c.getY() - 1;
+        if (navigationMap[cop.getX()][cop.getY() - 1] < shortestPath) {
+            tX = cop.getX();
+            tY = cop.getY() - 1;
             shortestPath = navigationMap[tX][tY];
         }
-        if (navigationMap[c.getX() - 1][c.getY()] < shortestPath) {
-            tX = c.getX() - 1;
-            tY = c.getY();
+        if (navigationMap[cop.getX() - 1][cop.getY()] < shortestPath) {
+            tX = cop.getX() - 1;
+            tY = cop.getY();
             shortestPath = navigationMap[tX][tY];
         }
-        c.moveTo(tX, tY);
-        c.standingOn = Map.tiles[c.getX()][c.getY()] == Tiles.COP
-                ? (Map.isNavigable(c.getX() / Map.MULTIPLIER, c.getY() / Map.MULTIPLIER)
-                    ? Tiles.SPACE
-                    : Tiles.GRASS)
-                : Map.tiles[c.getX()][c.getY()];
-        Map.tiles[tX][tY] = Tiles.COP;
-        if (c.getX() == Player.x && c.getY() == Player.y) {
+        MapTile whereCopIsStanding = Map.tiles[cop.getX()][cop.getY()] == MapTile.COP
+                ? (Map.isNavigable(cop.getX() / Map.MULTIPLIER, cop.getY() / Map.MULTIPLIER)
+                    ? MapTile.SPACE
+                    : MapTile.GRASS)
+                : Map.tiles[cop.getX()][cop.getY()];
+        cop.moveTo(tX, tY, whereCopIsStanding);
+        Map.tiles[tX][tY] = MapTile.COP;
+        if (cop.getX() == Player.x && cop.getY() == Player.y) {
             //todo calc score and display message
             TitleFrame.playing.set(false);
         }
@@ -119,19 +120,19 @@ public class Cops {
         if (depth > 100) {
             return;
         }
-        if (Map.inMapBounds(x + 1, y) && (navigationMap[x + 1][y] == 0 || depth + 1 < navigationMap[x + 1][y]) && (Map.tiles[x + 1][y] == Tiles.SPACE || Map.tiles[x + 1][y] == Tiles.GRASS)) {
+        if (Map.inMapBounds(x + 1, y) && (navigationMap[x + 1][y] == 0 || depth + 1 < navigationMap[x + 1][y]) && (Map.tiles[x + 1][y] == MapTile.SPACE || Map.tiles[x + 1][y] == MapTile.GRASS)) {
             markOpen(x + 1, y, depth + 1);
         }
 
-        if (Map.inMapBounds(x - 1, y) && (navigationMap[x - 1][y] == 0 || depth + 1 < navigationMap[x - 1][y]) && (Map.tiles[x - 1][y] == Tiles.SPACE || Map.tiles[x - 1][y] == Tiles.GRASS)) {
+        if (Map.inMapBounds(x - 1, y) && (navigationMap[x - 1][y] == 0 || depth + 1 < navigationMap[x - 1][y]) && (Map.tiles[x - 1][y] == MapTile.SPACE || Map.tiles[x - 1][y] == MapTile.GRASS)) {
             markOpen(x - 1, y, depth + 1);
         }
 
-        if (Map.inMapBounds(x, y + 1) && (navigationMap[x][y + 1] == 0 || depth + 1 < navigationMap[x][y + 1]) && (Map.tiles[x][y + 1] == Tiles.SPACE || Map.tiles[x][y + 1] == Tiles.GRASS)) {
+        if (Map.inMapBounds(x, y + 1) && (navigationMap[x][y + 1] == 0 || depth + 1 < navigationMap[x][y + 1]) && (Map.tiles[x][y + 1] == MapTile.SPACE || Map.tiles[x][y + 1] == MapTile.GRASS)) {
             markOpen(x, y + 1, depth + 1);
         }
 
-        if (Map.inMapBounds(x, y - 1) && (navigationMap[x][y - 1] == 0 || depth + 1 < navigationMap[x][y - 1]) && (Map.tiles[x][y - 1] == Tiles.SPACE || Map.tiles[x][y - 1] == Tiles.GRASS)) {
+        if (Map.inMapBounds(x, y - 1) && (navigationMap[x][y - 1] == 0 || depth + 1 < navigationMap[x][y - 1]) && (Map.tiles[x][y - 1] == MapTile.SPACE || Map.tiles[x][y - 1] == MapTile.GRASS)) {
             markOpen(x, y - 1, depth + 1);
         }
     }

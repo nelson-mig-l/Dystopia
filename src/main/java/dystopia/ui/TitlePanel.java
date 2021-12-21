@@ -1,4 +1,4 @@
-package dystopia;
+package dystopia.ui;
 
 import dystopia.highscore.HighScore;
 import dystopia.highscore.HighScores;
@@ -20,7 +20,7 @@ public class TitlePanel extends JPanel {
     /**
      * Shows what screen is currently showing
      */
-    public static AtomicReference<Screens> screen = new AtomicReference<>(Screens.TITLE);
+    public static AtomicReference<TitleScreens> screen = new AtomicReference<>(TitleScreens.TITLE);
 
     private static final BufferedImage titleScreenImage;
     private static final BufferedImage helpScreenImage;
@@ -35,7 +35,7 @@ public class TitlePanel extends JPanel {
     }
 
     public TitlePanel() {
-        TitlePanel.screen.set(Screens.TITLE);
+        TitlePanel.screen.set(TitleScreens.TITLE);
         this.setBackground(Color.black);
     }
 

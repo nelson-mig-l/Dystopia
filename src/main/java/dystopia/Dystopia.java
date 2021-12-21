@@ -1,5 +1,7 @@
 package dystopia;
 
+import dystopia.ui.TitleFrame;
+
 /**
  * @author Rohans
  */
@@ -11,7 +13,7 @@ public class Dystopia {
 
     public void run() {
         try {
-            TitleFrame.initialize();
+            new TitleFrame();
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }

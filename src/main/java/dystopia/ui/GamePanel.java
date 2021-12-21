@@ -1,6 +1,9 @@
-package dystopia.map;
+package dystopia.ui;
 
 import dystopia.Cops;
+import dystopia.map.Map;
+import dystopia.map.Player;
+import dystopia.map.MapTile;
 import dystopia.utils.Resources;
 
 import javax.swing.*;
@@ -28,7 +31,7 @@ public class GamePanel extends JPanel {
         g.drawString("Bounty: " + Cops.bounty + "$", 500, 30);
         for (int y = Player.y - 10; y <= Player.y + 10; y++) {
             for (int x = Player.x + 10; x >= Player.x - 10; x--) {
-                BufferedImage b = Tiles.GRASS.getImage();
+                BufferedImage b = MapTile.GRASS.getImage();
                 if (Map.inMapBounds(x, y)) {
                     b = Map.tiles[x][y].getImage();
                 }

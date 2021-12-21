@@ -1,6 +1,7 @@
 package dystopia;
 
 import dystopia.map.Map;
+import dystopia.ui.TitleFrame;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

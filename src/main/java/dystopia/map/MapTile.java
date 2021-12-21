@@ -4,7 +4,7 @@ import dystopia.utils.Resources;
 
 import java.awt.image.BufferedImage;
 
-public enum Tiles {
+public enum MapTile {
 
     GRASS("Grass.png"),
     SPACE("Empty.png"),
@@ -15,7 +15,7 @@ public enum Tiles {
 
     private final BufferedImage image;
 
-    Tiles(String resource) {
+    MapTile(String resource) {
         this.image = Resources.loadImage(resource);
     }
 

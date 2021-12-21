@@ -2,7 +2,7 @@ package dystopia;
 
 import dystopia.map.Map;
 import dystopia.map.Player;
-import dystopia.map.Tiles;
+import dystopia.map.MapTile;
 
 /**
  * @author Rohans
@@ -25,13 +25,13 @@ public class Car {
 
         int xAttempt = (int) (Math.random() * Map.tiles.length);
         int yAttempt = (int) (Math.random() * Map.tiles[0].length);
-        while (Map.tiles[xAttempt][yAttempt] != Tiles.SPACE) {
+        while (Map.tiles[xAttempt][yAttempt] != MapTile.SPACE) {
             xAttempt = (int) (Math.random() * Map.tiles.length);
             yAttempt = (int) (Math.random() * Map.tiles[0].length);
         }
         x = xAttempt;
         y = yAttempt;
-        Map.tiles[x][y] = Tiles.CAR;
+        Map.tiles[x][y] = MapTile.CAR;
         if (Map.isNavigable(x / Map.MULTIPLIER + 1, y / Map.MULTIPLIER)) {
             dir = 0;
         } else if (Map.isNavigable(x / Map.MULTIPLIER, y / Map.MULTIPLIER + 1)) {
@@ -44,11 +44,11 @@ public class Car {
     }
 
     public void move() {
-        Map.tiles[x][y] = Tiles.SPACE;
+        Map.tiles[x][y] = MapTile.SPACE;
         double angle = Math.PI / 2 * dir;
         int dX = (int) Math.cos(angle);
         int dY = (int) Math.sin(angle);
-        if (Map.tiles[x + dX][y + dY] != Tiles.SPACE) {
+        if (Map.tiles[x + dX][y + dY] != MapTile.SPACE) {
             dX *= -1;
             dY *= -1;
             dir += 2;
@@ -57,6 +57,6 @@ public class Car {
             x += dX;
             y += dY;
         }
-        Map.tiles[x][y] = Tiles.CAR;
+        Map.tiles[x][y] = MapTile.CAR;
     }
 }
