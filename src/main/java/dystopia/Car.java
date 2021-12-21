@@ -19,21 +19,7 @@ public class Car {
      *   I
      *   1
      */
-    public int dir;
-
-    /**
-     * Creates a car at a given location
-     */
-    private Car(int x, int y) {
-        if (!Map.inMapBounds(x, y)) {
-            throw new RuntimeException("Something bad happened while creating car");
-        } else {
-            this.x = x;
-            this.y = y;
-        }
-        Map.tiles[x][y] = Tiles.CAR;
-        dir = 0;
-    }
+    private int dir;
 
     public Car() {
 
@@ -46,13 +32,13 @@ public class Car {
         x = xAttempt;
         y = yAttempt;
         Map.tiles[x][y] = Tiles.CAR;
-        if (Map.navigable[(x / Map.MULTIPLIER) + 1][(y / Map.MULTIPLIER)]) {
+        if (Map.isNavigable(x / Map.MULTIPLIER + 1, y / Map.MULTIPLIER)) {
             dir = 0;
-        } else if (Map.navigable[(x / Map.MULTIPLIER)][(y / Map.MULTIPLIER) + 1]) {
+        } else if (Map.isNavigable(x / Map.MULTIPLIER, y / Map.MULTIPLIER + 1)) {
             dir = 1;
-        } else if (Map.navigable[(x / Map.MULTIPLIER) - 1][(y / Map.MULTIPLIER)]) {
+        } else if (Map.isNavigable(x / Map.MULTIPLIER - 1, y / Map.MULTIPLIER)) {
             dir = 2;
-        } else if (Map.navigable[(x / Map.MULTIPLIER)][(y / Map.MULTIPLIER) + 1]) {
+        } else if (Map.isNavigable(x / Map.MULTIPLIER, y / Map.MULTIPLIER + 1)) {
             dir = 1;
         }
     }

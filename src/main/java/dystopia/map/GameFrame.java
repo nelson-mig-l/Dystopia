@@ -23,6 +23,8 @@ public class GameFrame extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
+
+                final int vkSpace = KeyEvent.VK_SPACE;
                 Player.move(e.getKeyChar());
             }
 

@@ -17,10 +17,10 @@ public class Map {
     public static final int MULTIPLIER = 5;
     public static final int CITY_SIZE = 39;
 
-    public static boolean[][] navigable;
+    private static boolean[][] navigable;
     public static Tiles[][] tiles;
 
-    private static Stack<Coord> nodes = new Stack<>();
+    private static final Stack<Coordinate> nodes = new Stack<>();
 
     public static void initialize() {
         makeCity();
@@ -37,7 +37,7 @@ public class Map {
         Player.x = MULTIPLIER;
         Player.y = MULTIPLIER;
         navigable = new boolean[CITY_SIZE][CITY_SIZE];
-        nodes.push(new Coord(1, 1));
+        nodes.push(new Coordinate(1, 1));
         while (!nodes.empty()) {
             findNewNode();
         }
@@ -64,8 +64,8 @@ public class Map {
             }
     }
 
-    public static void findNewNode() {
-        Coord c = nodes.peek();
+    private static void findNewNode() {
+        Coordinate c = nodes.peek();
         int x = c.getX();
         int y = c.getY();
 
@@ -91,7 +91,7 @@ public class Map {
                 if (!navigable[attemptX][attemptY]) {
                     navigable[attemptX][attemptY] = true;
                     navigable[x + ((attemptX - x) / 2)][y + ((attemptY - y) / 2)] = true;
-                    nodes.push(new Coord(attemptX, attemptY));
+                    nodes.push(new Coordinate(attemptX, attemptY));
                     return;
                 }
             }
@@ -99,6 +99,10 @@ public class Map {
             startCase %= 4;
         }
         nodes.pop();
+    }
+
+    public static boolean isNavigable(int x, int y) {
+        return navigable[x][y];
     }
 
     public static boolean inMapBounds(int x, int y) {

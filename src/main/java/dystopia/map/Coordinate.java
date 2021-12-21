@@ -1,11 +1,11 @@
 package dystopia.map;
 
-public class Coord {
+public class Coordinate {
 
     private final int x;
     private final int y;
 
-    Coord(int x, int y) {
+    Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
     }

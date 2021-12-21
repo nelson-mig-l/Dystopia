@@ -1,8 +1,5 @@
 package dystopia.highscore;
 
-import java.util.Arrays;
-import javax.swing.JOptionPane;
-
 /**
  * Structure for managing high scores as well as updating the table
  *

@@ -21,10 +21,7 @@ public class Cops {
                 aX = (int) (Math.random() * Map.tiles.length);
                 aY = (int) (Math.random() * Map.tiles[0].length);
             }
-            cops.add(new Cop());
-            cops.get(i).x = aX;
-            cops.get(i).y = aY;
-            cops.get(i).standingOn = Map.tiles[aX][aY];
+            cops.add(new Cop(aX, aY, Map.tiles[aX][aY]));
             Map.tiles[aX][aY] = Tiles.COP;
         }
     }
@@ -37,10 +34,7 @@ public class Cops {
             aX = (int) (Math.random() * Map.tiles.length);
             aY = (int) (Math.random() * Map.tiles[0].length);
         }
-        cops.add(new Cop());
-        cops.get(cops.size() - 1).x = aX;
-        cops.get(cops.size() - 1).y = aY;
-        cops.get(cops.size() - 1).standingOn = Map.tiles[aX][aY];
+        cops.add(new Cop(aX, aY, Map.tiles[aX][aY]));
         Map.tiles[aX][aY] = Tiles.COP;
     }
 
@@ -52,34 +46,37 @@ public class Cops {
     }
 
     private static void moveSingleCop(final Cop c) {
-        int tX = c.x, tY = c.y;
-        Map.tiles[c.x][c.y] = c.standingOn;
+        int tX = c.getX(), tY = c.getY();
+        Map.tiles[c.getX()][c.getY()] = c.standingOn;
         int shortestPath = Integer.MAX_VALUE;
-        if (navigationMap[c.x + 1][c.y] < shortestPath) {
-            tX = c.x + 1;
-            tY = c.y;
+        if (navigationMap[c.getX() + 1][c.getY()] < shortestPath) {
+            tX = c.getX() + 1;
+            tY = c.getY();
             shortestPath = navigationMap[tX][tY];
         }
-        if (navigationMap[c.x][c.y + 1] < shortestPath) {
-            tX = c.x;
-            tY = c.y + 1;
+        if (navigationMap[c.getX()][c.getY() + 1] < shortestPath) {
+            tX = c.getX();
+            tY = c.getY() + 1;
             shortestPath = navigationMap[tX][tY];
         }
-        if (navigationMap[c.x][c.y - 1] < shortestPath) {
-            tX = c.x;
-            tY = c.y - 1;
+        if (navigationMap[c.getX()][c.getY() - 1] < shortestPath) {
+            tX = c.getX();
+            tY = c.getY() - 1;
             shortestPath = navigationMap[tX][tY];
         }
-        if (navigationMap[c.x - 1][c.y] < shortestPath) {
-            tX = c.x - 1;
-            tY = c.y;
+        if (navigationMap[c.getX() - 1][c.getY()] < shortestPath) {
+            tX = c.getX() - 1;
+            tY = c.getY();
             shortestPath = navigationMap[tX][tY];
         }
-        c.x = tX;
-        c.y = tY;
-        c.standingOn = Map.tiles[c.x][c.y] == Tiles.COP ? (Map.navigable[c.x / Map.MULTIPLIER][c.y / Map.MULTIPLIER] ? Tiles.SPACE : Tiles.GRASS) : Map.tiles[c.x][c.y];
+        c.moveTo(tX, tY);
+        c.standingOn = Map.tiles[c.getX()][c.getY()] == Tiles.COP
+                ? (Map.isNavigable(c.getX() / Map.MULTIPLIER, c.getY() / Map.MULTIPLIER)
+                    ? Tiles.SPACE
+                    : Tiles.GRASS)
+                : Map.tiles[c.getX()][c.getY()];
         Map.tiles[tX][tY] = Tiles.COP;
-        if (c.x == Player.x && c.y == Player.y) {
+        if (c.getX() == Player.x && c.getY() == Player.y) {
             //todo calc score and display message
             TitleFrame.playing.set(false);
         }

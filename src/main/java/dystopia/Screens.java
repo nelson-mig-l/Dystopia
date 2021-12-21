@@ -8,5 +8,5 @@ package dystopia;
 public enum Screens {
 	TITLE,
 	HELP,
-	HIGH_SCORE;
+	HIGH_SCORE
 }
