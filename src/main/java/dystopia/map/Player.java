@@ -5,10 +5,10 @@ import dystopia.Game;
 
 public class Player {
 
-    public static int x = Map.MULTIPLIER, y = Map.MULTIPLIER;
+    public static Coordinate position = new Coordinate(Map.MULTIPLIER, Map.MULTIPLIER);
 
     public static void move(char m) {
-        int tX = x, tY = y;
+        int tX = position.getX(), tY = position.getY();
         switch (m) {
             case 'w':
                 tY--;
@@ -30,8 +30,9 @@ public class Player {
             Cops.bounty += 25000;
         }
         if (Map.inMapBounds(tX, tY) && Map.getTileAt(tX, tY) == MapTile.SPACE || Map.getTileAt(tX, tY) == MapTile.GRASS) {
-            x = tX;
-            y = tY;
+            //x = tX;
+            //y = tY;
+            position = new Coordinate(tX, tY);
         }
     }
 }

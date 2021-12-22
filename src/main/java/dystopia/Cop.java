@@ -1,5 +1,6 @@
 package dystopia;
 
+import dystopia.map.Coordinate;
 import dystopia.map.MapTile;
 
 /**
@@ -8,30 +9,24 @@ import dystopia.map.MapTile;
 public class Cop {
 
     private MapTile standingOn;
-    private int x;
+    private Coordinate position;
     private int y;
 
-    public Cop(final int x, final int y, final MapTile standingOn) {
-        this.x = x;
-        this.y = y;
+    public Cop(final Coordinate position, final MapTile standingOn) {
+        this.position = position;
         this.standingOn = standingOn;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
+    public Coordinate getPosition() {
+        return position;
     }
 
     public MapTile standingAt() {
         return standingOn;
     }
 
-    public void moveTo(final int x, final int y, final MapTile standingOn) {
-        this.x = x;
-        this.y = y;
+    public void moveTo(final Coordinate position, final MapTile standingOn) {
+        this.position = position;
         this.standingOn = standingOn;
     }
 

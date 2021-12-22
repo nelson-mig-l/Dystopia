@@ -6,6 +6,7 @@ import dystopia.ui.GameFrame;
 import dystopia.ui.TitleFrame;
 import dystopia.highscore.HighScores;
 
+import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -18,6 +19,18 @@ public class Map {
     public static final int MULTIPLIER = 5;
     public static final int CITY_SIZE = 39;
     public static final int TILES_SIZE = CITY_SIZE * MULTIPLIER;
+
+    private static final Random random = new Random();
+
+    public static Coordinate randomEmptyPosition() {
+        int x = random.nextInt(Map.TILES_SIZE);
+        int y = random.nextInt(Map.TILES_SIZE);
+        while (Map.getTileAt(x, y) != MapTile.SPACE) {
+            x = random.nextInt(Map.TILES_SIZE);
+            y = random.nextInt(Map.TILES_SIZE);
+        }
+        return new Coordinate(x, y);
+    }
 
     private static boolean[][] navigable;
 
@@ -36,17 +49,24 @@ public class Map {
         HighScores.manageScore(Cops.bounty);
     }
 
+    @Deprecated
     public static MapTile getTileAt(int x, int y) {
         return tiles[x][y];
     }
+    public static MapTile getTileAt(final Coordinate position) {
+        return tiles[position.getX()][position.getY()];
+    }
 
+    @Deprecated
     public static void setTileAt(int x, int y, MapTile tile) {
         tiles[x][y] = tile;
     }
+    public static void setTileAt(Coordinate position, MapTile tile) {
+        tiles[position.getX()][position.getY()] = tile;
+    }
 
     public static void makeCity() {
-        Player.x = MULTIPLIER;
-        Player.y = MULTIPLIER;
+        Player.position = new Coordinate(MULTIPLIER, MULTIPLIER);
         navigable = new boolean[CITY_SIZE][CITY_SIZE];
         nodes.push(new Coordinate(1, 1));
         while (!nodes.empty()) {
@@ -112,8 +132,8 @@ public class Map {
         nodes.pop();
     }
 
-    public static boolean isNavigable(int x, int y) {
-        return navigable[x][y];
+    public static boolean isNavigable(final Coordinate position) {
+        return navigable[position.getX()][position.getY()];
     }
 
     public static boolean inMapBounds(int x, int y) {

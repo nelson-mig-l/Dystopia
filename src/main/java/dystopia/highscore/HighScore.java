@@ -1,8 +1,6 @@
 package dystopia.highscore;
 
 /**
- * Structure for managing high scores as well as updating the table
- *
  * @author rohan
  */
 public class HighScore implements Comparable<HighScore> {
