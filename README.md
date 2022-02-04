@@ -1,4 +1,4 @@
-# Dystopia
+# Dystopia :cat:
 This is an open world GTA styled game with retro isometric graphics. This is part of a collaborative effort.
 <hr />
 Developemental Pipeline for upcoming features. A feature <s>struck through</s> is already completed.
